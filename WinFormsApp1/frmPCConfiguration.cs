@@ -8,48 +8,12 @@ public partial class frmPCConfiguration : Form
     {
         InitializeComponent();
         config = c ?? new PCConfiguration();
-        LoadComboBoxes();
         if (c != null)
         {
-            cmbUser.SelectedValue = c.UserId;
-            cmbComponent.SelectedValue = c.ComponentId;
-            txtConfigurationName.Text = c.ConfigurationName;
+            txtUserId.Text = c.UserId.ToString();
+            txtComponentId.Text = c.ComponentId.ToString();
+            txtConfigurationName.Text = c.ConfigurationName ?? "";
             txtTotalPrice.Text = c.TotalPrice.ToString();
-        }
-    }
-
-    private void LoadComboBoxes()
-    {
-        try
-        {
-            using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
-            {
-                conn.Open();
-                // Пользователи
-                string userQuery = "SELECT Id, LastName || ' ' || FirstName AS FullName FROM User";
-                using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(userQuery, conn))
-                {
-                    DataTable dtUser = new DataTable();
-                    adapter.Fill(dtUser);
-                    cmbUser.DataSource = dtUser;
-                    cmbUser.DisplayMember = "FullName";
-                    cmbUser.ValueMember = "Id";
-                }
-                // Компоненты
-                string componentQuery = "SELECT Id, Name FROM Component";
-                using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(componentQuery, conn))
-                {
-                    DataTable dtComponent = new DataTable();
-                    adapter.Fill(dtComponent);
-                    cmbComponent.DataSource = dtComponent;
-                    cmbComponent.DisplayMember = "Name";
-                    cmbComponent.ValueMember = "Id";
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -57,15 +21,16 @@ public partial class frmPCConfiguration : Form
     {
         try
         {
-            if (cmbUser.SelectedValue == null || cmbComponent.SelectedValue == null || string.IsNullOrWhiteSpace(txtConfigurationName.Text) || string.IsNullOrWhiteSpace(txtTotalPrice.Text))
+            if (string.IsNullOrWhiteSpace(txtUserId.Text) || string.IsNullOrWhiteSpace(txtComponentId.Text) ||
+                string.IsNullOrWhiteSpace(txtTotalPrice.Text))
             {
-                MessageBox.Show("Все поля обязательны для заполнения.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("UserId, ComponentId и TotalPrice обязательны.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            config.UserId = Convert.ToInt32(cmbUser.SelectedValue);
-            config.ComponentId = Convert.ToInt32(cmbComponent.SelectedValue);
-            config.ConfigurationName = txtConfigurationName.Text;
+            config.UserId = Convert.ToInt32(txtUserId.Text);
+            config.ComponentId = Convert.ToInt32(txtComponentId.Text);
+            config.ConfigurationName = string.IsNullOrWhiteSpace(txtConfigurationName.Text) ? null : txtConfigurationName.Text;
             config.TotalPrice = Convert.ToDecimal(txtTotalPrice.Text);
 
             if (config.Id == 0)

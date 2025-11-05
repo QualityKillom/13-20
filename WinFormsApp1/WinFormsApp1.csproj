@@ -48,6 +48,48 @@
       <Compile Update="frmOrder.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="frmListPerson.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmPerson.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListBank.cs.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmBank.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListCard.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmCard.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListEduLevel.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmEduLevel.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListSpecialty.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmSpecialty.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListQualification.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmQualification.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListEducationalInstitution.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmEducationalInstitution.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>

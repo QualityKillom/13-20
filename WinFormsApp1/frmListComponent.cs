@@ -1,97 +1,97 @@
 ﻿namespace WinFormsApp1;
 public partial class frmListComponent : Form
-{
-    public frmListComponent()
     {
-        InitializeComponent();
-        LoadData();
-    }
-
-    private void LoadData()
-    {
-        try
+        public frmListComponent()
         {
-            using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
-            {
-                conn.Open();
-                string query = "SELECT Id, Name, Category, Price, StockQuantity FROM Component";
-                using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn))
-                {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dataGridView1.DataSource = dt; // Убедитесь, что используется dataGridView1
-                }
-            }
+            InitializeComponent();
+            LoadData();
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-    }
 
-    private void btnAdd_Click(object sender, EventArgs e)
-    {
-        frmComponent form = new frmComponent();
-        form.MdiParent = this.MdiParent;
-        form.FormClosed += (s, args) => LoadData();
-        form.Show();
-    }
-
-    private void btnEdit_Click(object sender, EventArgs e)
-    {
-        if (dataGridView1.SelectedRows.Count > 0)
+        private void LoadData()
         {
             try
             {
-                DataGridViewRow row = dataGridView1.SelectedRows[0];
-                Component component = new Component
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
                 {
-                    Id = Convert.ToInt32(row.Cells["Id"].Value),
-                    Name = row.Cells["Name"].Value?.ToString(),
-                    Category = row.Cells["Category"].Value?.ToString(),
-                    Price = Convert.ToDecimal(row.Cells["Price"].Value),
-                    StockQuantity = Convert.ToInt32(row.Cells["StockQuantity"].Value)
-                };
-                frmComponent form = new frmComponent(component);
-                form.MdiParent = this.MdiParent;
-                form.FormClosed += (s, args) => LoadData();
-                form.Show();
+                    conn.Open();
+                    string query = "SELECT Id, Name, Category, Price, StockQuantity FROM Component";
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        dataGridView1.DataSource = dt;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при редактировании: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        else
-        {
-            MessageBox.Show("Выберите запись для редактирования.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-    }
 
-    private void btnDelete_Click(object sender, EventArgs e)
-    {
-        if (dataGridView1.SelectedRows.Count > 0)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            try
+            frmComponent form = new frmComponent();
+            form.MdiParent = this.MdiParent;
+            form.FormClosed += (s, args) => LoadData();
+            form.Show();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                DialogResult result = MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                try
                 {
                     DataGridViewRow row = dataGridView1.SelectedRows[0];
-                    int id = Convert.ToInt32(row.Cells["Id"].Value);
-                    Component component = new Component { Id = id };
-                    component.Delete();
-                    LoadData();
+                    Component component = new Component
+                    {
+                        Id = Convert.ToInt32(row.Cells["Id"].Value),
+                        Name = row.Cells["Name"].Value?.ToString(),
+                        Category = row.Cells["Category"].Value?.ToString(),
+                        Price = Convert.ToDecimal(row.Cells["Price"].Value),
+                        StockQuantity = Convert.ToInt32(row.Cells["StockQuantity"].Value)
+                    };
+                    frmComponent form = new frmComponent(component);
+                    form.MdiParent = this.MdiParent;
+                    form.FormClosed += (s, args) => LoadData();
+                    form.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при редактировании: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Выберите запись для редактирования.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        else
+
+        private void btnDelete_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Выберите запись для удаления.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    DialogResult result = MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        DataGridViewRow row = dataGridView1.SelectedRows[0];
+                        int id = Convert.ToInt32(row.Cells["Id"].Value);
+                        Component component = new Component { Id = id };
+                        component.Delete();
+                        LoadData();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Выберите запись для удаления.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
-}

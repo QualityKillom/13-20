@@ -5,13 +5,14 @@ namespace WinFormsApp1;
 partial class frmWorker
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.ComboBox cmbPerson;
-        private System.Windows.Forms.ComboBox cmbRank;
+        private System.Windows.Forms.TextBox txtPersonId;
+        private System.Windows.Forms.TextBox txtRankId;
         private System.Windows.Forms.DateTimePicker dtpHireDate;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Label lblPerson;
-        private System.Windows.Forms.Label lblRank;
+        private System.Windows.Forms.Label lblPersonId;
+        private System.Windows.Forms.Label lblRankId;
         private System.Windows.Forms.Label lblHireDate;
+        private System.Windows.Forms.Panel panelTop;
 
         protected override void Dispose(bool disposing)
         {
@@ -24,81 +25,110 @@ partial class frmWorker
 
         private void InitializeComponent()
         {
-            this.cmbPerson = new System.Windows.Forms.ComboBox();
-            this.cmbRank = new System.Windows.Forms.ComboBox();
+            this.txtPersonId = new System.Windows.Forms.TextBox();
+            this.txtRankId = new System.Windows.Forms.TextBox();
             this.dtpHireDate = new System.Windows.Forms.DateTimePicker();
             this.btnSave = new System.Windows.Forms.Button();
-            this.lblPerson = new System.Windows.Forms.Label();
-            this.lblRank = new System.Windows.Forms.Label();
+            this.lblPersonId = new System.Windows.Forms.Label();
+            this.lblRankId = new System.Windows.Forms.Label();
             this.lblHireDate = new System.Windows.Forms.Label();
+            this.panelTop = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // cmbPerson
+            // txtPersonId
             // 
-            this.cmbPerson.Location = new System.Drawing.Point(120, 20);
-            this.cmbPerson.Name = "cmbPerson";
-            this.cmbPerson.Size = new System.Drawing.Size(200, 21);
-            this.cmbPerson.TabIndex = 0;
+            this.txtPersonId.Location = new System.Drawing.Point(150, 70);
+            this.txtPersonId.Name = "txtPersonId";
+            this.txtPersonId.Size = new System.Drawing.Size(200, 23);
+            this.txtPersonId.TabIndex = 0;
+            this.txtPersonId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
-            // cmbRank
+            // txtRankId
             // 
-            this.cmbRank.Location = new System.Drawing.Point(120, 50);
-            this.cmbRank.Name = "cmbRank";
-            this.cmbRank.Size = new System.Drawing.Size(200, 21);
-            this.cmbRank.TabIndex = 1;
+            this.txtRankId.Location = new System.Drawing.Point(150, 100);
+            this.txtRankId.Name = "txtRankId";
+            this.txtRankId.Size = new System.Drawing.Size(200, 23);
+            this.txtRankId.TabIndex = 1;
+            this.txtRankId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
             // dtpHireDate
             // 
-            this.dtpHireDate.Location = new System.Drawing.Point(120, 80);
+            this.dtpHireDate.Location = new System.Drawing.Point(150, 130);
             this.dtpHireDate.Name = "dtpHireDate";
-            this.dtpHireDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpHireDate.Size = new System.Drawing.Size(200, 23);
             this.dtpHireDate.TabIndex = 2;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(120, 110);
+            this.btnSave.Location = new System.Drawing.Point(150, 170);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(100, 30);
             this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "Сохранить";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Text = "💾 Сохранить";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // lblPerson
+            // lblPersonId
             // 
-            this.lblPerson.Location = new System.Drawing.Point(20, 20);
-            this.lblPerson.Name = "lblPerson";
-            this.lblPerson.Size = new System.Drawing.Size(100, 20);
-            this.lblPerson.Text = "Физлицо:";
+            this.lblPersonId.AutoSize = true;
+            this.lblPersonId.Location = new System.Drawing.Point(50, 73);
+            this.lblPersonId.Name = "lblPersonId";
+            this.lblPersonId.Size = new System.Drawing.Size(94, 13);
+            this.lblPersonId.TabIndex = 4;
+            this.lblPersonId.Text = "ID человека:";
+            this.lblPersonId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
             // 
-            // lblRank
+            // lblRankId
             // 
-            this.lblRank.Location = new System.Drawing.Point(20, 50);
-            this.lblRank.Name = "lblRank";
-            this.lblRank.Size = new System.Drawing.Size(100, 20);
-            this.lblRank.Text = "Должность:";
+            this.lblRankId.AutoSize = true;
+            this.lblRankId.Location = new System.Drawing.Point(50, 103);
+            this.lblRankId.Name = "lblRankId";
+            this.lblRankId.Size = new System.Drawing.Size(94, 13);
+            this.lblRankId.TabIndex = 5;
+            this.lblRankId.Text = "ID должности:";
+            this.lblRankId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
             // 
             // lblHireDate
             // 
-            this.lblHireDate.Location = new System.Drawing.Point(20, 80);
+            this.lblHireDate.AutoSize = true;
+            this.lblHireDate.Location = new System.Drawing.Point(50, 133);
             this.lblHireDate.Name = "lblHireDate";
-            this.lblHireDate.Size = new System.Drawing.Size(100, 20);
-            this.lblHireDate.Text = "Дата приема:";
+            this.lblHireDate.Size = new System.Drawing.Size(94, 13);
+            this.lblHireDate.TabIndex = 6;
+            this.lblHireDate.Text = "Дата найма:";
+            this.lblHireDate.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
+            // 
+            // panelTop
+            // 
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(51, 153, 255);
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(400, 50);
+            this.panelTop.TabIndex = 7;
             // 
             // frmWorker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 160);
+            this.ClientSize = new System.Drawing.Size(400, 250);
+            this.Controls.Add(this.panelTop);
             this.Controls.Add(this.lblHireDate);
-            this.Controls.Add(this.lblRank);
-            this.Controls.Add(this.lblPerson);
+            this.Controls.Add(this.lblRankId);
+            this.Controls.Add(this.lblPersonId);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.dtpHireDate);
-            this.Controls.Add(this.cmbRank);
-            this.Controls.Add(this.cmbPerson);
+            this.Controls.Add(this.txtRankId);
+            this.Controls.Add(this.txtPersonId);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmWorker";
-            this.Text = "Сотрудник";
+            this.Text = "Добавление/Редактирование сотрудника";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
+            this.PerformLayout();
         }
     }
