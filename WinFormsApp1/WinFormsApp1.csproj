@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Npgsql" Version="10.0.0-rc.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="frmFL.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListWorker.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmWorker.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmMain.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListComponent.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmComponent.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListPCConfiguration.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmPCConfiguration.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListOrder.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmOrder.cs">
+        <SubType>Form</SubType>
+      </Compile>
+    </ItemGroup>
+
+</Project>
