@@ -9,3 +9,15 @@ D:\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.dll
 D:\13-20\Infrastructure\obj\Debug\net8.0\refint\Infrastructure.dll
 D:\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
 D:\13-20\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\bin\Debug\net8.0\Infrastructure.deps.json
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\bin\Debug\net8.0\Infrastructure.dll
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\bin\Debug\net8.0\Infrastructure.pdb
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.AssemblyInfoInputs.cache
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.AssemblyInfo.cs
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.sourcelink.json
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.dll
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\refint\Infrastructure.dll
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
+C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll
