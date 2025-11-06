@@ -1,46 +1,57 @@
-﻿namespace WinFormsApp1;
+﻿using System;
+using System.Windows.Forms;
 
-public partial class frmWorker : Form
+namespace WinFormsApp1
 {
-    private Worker worker;
-
-    public frmWorker(Worker w = null)
+    public partial class frmWorker : Form
     {
-        InitializeComponent();
-        worker = w ?? new Worker();
-        if (w != null)
-        {
-            // Предположим, что есть поля для PersonId, RankId, HireDate
-            txtPersonId.Text = w.PersonId.ToString();
-            txtRankId.Text = w.RankId.ToString();
-            dtpHireDate.Value = w.HireDate ?? DateTime.Now;
-        }
-    }
+        private Worker worker;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmWorker(Worker w = null)
         {
-            if (string.IsNullOrWhiteSpace(txtPersonId.Text) || string.IsNullOrWhiteSpace(txtRankId.Text))
+            InitializeComponent();
+            worker = w ?? new Worker();
+
+            if (w != null)
             {
-                MessageBox.Show("PersonId и RankId обязательны.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                txtPersonId.Text = w.PersonId.ToString();
+                txtRankId.Text = w.RankId.ToString();
+                dtpHireDate.Value = w.HireDate ?? DateTime.Now;
             }
-
-            worker.PersonId = Convert.ToInt32(txtPersonId.Text);
-            worker.RankId = Convert.ToInt32(txtRankId.Text);
-            worker.HireDate = dtpHireDate.Value;
-
-            if (worker.Id == 0)
-                worker.Add();
             else
-                worker.Update();
-
-            this.Close();
+            {
+                dtpHireDate.Value = DateTime.Now;
+            }
         }
-        catch (Exception ex)
+
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                if (!int.TryParse(txtPersonId.Text, out int personId) ||
+                    !int.TryParse(txtRankId.Text, out int rankId))
+                {
+                    MessageBox.Show("PersonId и RankId должны быть числами.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                worker.PersonId = personId;
+                worker.RankId = rankId;
+                worker.HireDate = dtpHireDate.Value;
+
+                if (worker.Id == 0)
+                    worker.Add();
+                else
+                    worker.Update();
+
+                MessageBox.Show("Данные успешно сохранены.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

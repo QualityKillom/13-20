@@ -90,6 +90,36 @@
       <Compile Update="frmEducationalInstitution.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="frmListRank.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmRank.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListEducation.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmEducation.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListDocumentType.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmDocumentType.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListDocument.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmDocument.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmListOrganization.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="frmOrganization.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>

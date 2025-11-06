@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\13-20\\Infrastructure\\Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\QualityKillom\\RiderProjects\\13-20\\Infrastructure\\Infrastructure.csproj",
       "projectName": "Infrastructure",
-      "projectPath": "D:\\13-20\\Infrastructure\\Infrastructure.csproj",
+      "projectPath": "C:\\Users\\QualityKillom\\RiderProjects\\13-20\\Infrastructure\\Infrastructure.csproj",
       "packagesPath": "C:\\Users\\QualityKillom\\.nuget\\packages\\",
-      "outputPath": "D:\\13-20\\Infrastructure\\obj\\",
+      "outputPath": "C:\\Users\\QualityKillom\\RiderProjects\\13-20\\Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\QualityKillom\\AppData\\Roaming\\NuGet\\NuGet.Config"
