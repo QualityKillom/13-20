@@ -1,41 +1,75 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmQualification : Form
+﻿namespace WinFormsApp1
 {
-    private Qualification qualification;
-
-    public frmQualification(Qualification q = null)
+    public partial class frmQualification : Form
     {
-        InitializeComponent();
-        qualification = q ?? new Qualification();
-        if (q != null)
-        {
-            txtName.Text = q.Name;
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmQualification(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Название квалификации обязательно.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadQualification();
             }
-
-            qualification.Name = txtName.Text;
-
-            if (qualification.Id == 0)
-                qualification.Add();
-            else
-                qualification.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadQualification()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Qualification WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader["Name"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading qualification: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtName.Text))
+                {
+                    MessageBox.Show("Please enter a name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                Qualification qualification = new Qualification
+                {
+                    Id = _id ?? 0,
+                    Name = txtName.Text
+                };
+                qualification.Add();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving qualification: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

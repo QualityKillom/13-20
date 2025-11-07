@@ -1,18 +1,100 @@
-﻿namespace WinFormsApp1;
+﻿
+
+namespace WinFormsApp1
+{
     public partial class frmCard : Form
     {
-        private Card card;
+        private int? id;
 
-        public frmCard(Card c = null)
+        public frmCard(int? id = null)
         {
             InitializeComponent();
-            card = c ?? new Card();
-            if (c != null)
+            this.id = id;
+            LoadWorkers();
+            LoadBanks();
+            if (id.HasValue)
             {
-                txtWorkerId.Text = c.WorkerId.ToString();
-                txtBankId.Text = c.BankId.ToString();
-                txtCardNumber.Text = c.CardNumber;
-                dtpIssueDate.Value = c.IssueDate ?? DateTime.Now;
+                LoadCard();
+            }
+        }
+
+        private void LoadWorkers()
+        {
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT w.Id, p.LastName || ' ' || p.FirstName AS FullName " +
+                                   "FROM Worker w JOIN Person p ON w.PersonId = p.Id";
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cbWorker.DataSource = dt;
+                        cbWorker.DisplayMember = "FullName";
+                        cbWorker.ValueMember = "Id";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading workers: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadBanks()
+        {
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Id, Name FROM Bank";
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cbBank.DataSource = dt;
+                        cbBank.DisplayMember = "Name";
+                        cbBank.ValueMember = "Id";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading banks: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadCard()
+        {
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Card WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                cbWorker.SelectedValue = reader.GetInt32("WorkerId");
+                                cbBank.SelectedValue = reader.GetInt32("BankId");
+                                txtCardNumber.Text = reader.GetString("CardNumber");
+                                dtpIssueDate.Value = reader.IsDBNull(reader.GetOrdinal("IssueDate")) ? DateTime.Now : reader.GetDateTime("IssueDate");
+                                dtpIssueDate.Checked = !reader.IsDBNull(reader.GetOrdinal("IssueDate"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading card: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -20,27 +102,36 @@
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(txtWorkerId.Text) || string.IsNullOrWhiteSpace(txtBankId.Text) || string.IsNullOrWhiteSpace(txtCardNumber.Text))
+                Card card = new Card
                 {
-                    MessageBox.Show("WorkerId, BankId и CardNumber обязательны.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                    Id = id ?? 0,
+                    WorkerId = Convert.ToInt32(cbWorker.SelectedValue),
+                    BankId = Convert.ToInt32(cbBank.SelectedValue),
+                    CardNumber = txtCardNumber.Text,
+                    IssueDate = dtpIssueDate.Checked ? dtpIssueDate.Value : (DateTime?)null
+                };
 
-                card.WorkerId = Convert.ToInt32(txtWorkerId.Text);
-                card.BankId = Convert.ToInt32(txtBankId.Text);
-                card.CardNumber = txtCardNumber.Text;
-                card.IssueDate = dtpIssueDate.Value;
-
-                if (card.Id == 0)
-                    card.Add();
-                else
+                if (id.HasValue)
+                {
                     card.Update();
-
-                this.Close();
+                }
+                else
+                {
+                    card.Add();
+                }
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error saving card: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
     }
+}

@@ -1,0 +1,137 @@
+﻿-- Create table for Person
+CREATE TABLE Person (
+    Id SERIAL PRIMARY KEY,
+    LastName VARCHAR(100) NOT NULL,
+    FirstName VARCHAR(100) NOT NULL,
+    MiddleName VARCHAR(100),
+    Phone VARCHAR(20)
+);
+
+-- Create table for Organization
+CREATE TABLE Organization (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Address VARCHAR(255)
+);
+
+-- Create table for Bank
+CREATE TABLE Bank (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    BIC VARCHAR(11)
+);
+
+-- Create table for DocumentType
+CREATE TABLE DocumentType (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL
+);
+
+-- Create table for Document
+CREATE TABLE Document (
+    Id SERIAL PRIMARY KEY,
+    PersonId INTEGER NOT NULL,
+    DocumentTypeId INTEGER NOT NULL,
+    OrganizationId INTEGER NOT NULL,
+    Number VARCHAR(50) NOT NULL,
+    IssueDate DATE,
+    FOREIGN KEY (PersonId) REFERENCES Person(Id) ON DELETE CASCADE,
+    FOREIGN KEY (DocumentTypeId) REFERENCES DocumentType(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (OrganizationId) REFERENCES Organization(Id) ON DELETE RESTRICT
+);
+
+-- Create table for Rank
+CREATE TABLE Rank (
+    Id SERIAL PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    Salary DECIMAL(10, 2) NOT NULL
+);
+
+-- Create table for Worker
+CREATE TABLE Worker (
+    Id SERIAL PRIMARY KEY,
+    PersonId INTEGER NOT NULL,
+    RankId INTEGER NOT NULL,
+    HireDate DATE,
+    FOREIGN KEY (PersonId) REFERENCES Person(Id) ON DELETE CASCADE,
+    FOREIGN KEY (RankId) REFERENCES Rank(Id) ON DELETE RESTRICT
+);
+
+-- Create table for Card
+CREATE TABLE Card (
+    Id SERIAL PRIMARY KEY,
+    WorkerId INTEGER NOT NULL,
+    BankId INTEGER NOT NULL,
+    CardNumber VARCHAR(20) NOT NULL,
+    IssueDate DATE,
+    FOREIGN KEY (WorkerId) REFERENCES Worker(Id) ON DELETE CASCADE,
+    FOREIGN KEY (BankId) REFERENCES Bank(Id) ON DELETE RESTRICT
+);
+
+-- Create table for EduLevel
+CREATE TABLE EduLevel (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL
+);
+
+-- Create table for Specialty
+CREATE TABLE Specialty (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL
+);
+
+-- Create table for Qualification
+CREATE TABLE Qualification (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL
+);
+
+-- Create table for EducationalInstitution
+CREATE TABLE EducationalInstitution (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Address VARCHAR(255)
+);
+
+-- Create table for Education
+CREATE TABLE Education (
+    Id SERIAL PRIMARY KEY,
+    WorkerId INTEGER NOT NULL,
+    EduLevelId INTEGER NOT NULL,
+    SpecialtyId INTEGER NOT NULL,
+    QualificationId INTEGER NOT NULL,
+    InstitutionId INTEGER NOT NULL,
+    GraduationYear INTEGER,
+    FOREIGN KEY (WorkerId) REFERENCES Worker(Id) ON DELETE CASCADE,
+    FOREIGN KEY (EduLevelId) REFERENCES EduLevel(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (SpecialtyId) REFERENCES Specialty(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (QualificationId) REFERENCES Qualification(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (InstitutionId) REFERENCES EducationalInstitution(Id) ON DELETE RESTRICT
+);
+
+-- Create table for Car
+CREATE TABLE Car (
+    Id SERIAL PRIMARY KEY,
+    OrganizationId INTEGER NOT NULL,
+    Make VARCHAR(50) NOT NULL,
+    Model VARCHAR(50) NOT NULL,
+    Year INTEGER NOT NULL,
+    LicensePlate VARCHAR(20) NOT NULL,
+    DailyRate DECIMAL(10, 2) NOT NULL,
+    IsAvailable BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (OrganizationId) REFERENCES Organization(Id) ON DELETE RESTRICT
+);
+
+-- Create table for Rental
+CREATE TABLE Rental (
+    Id SERIAL PRIMARY KEY,
+    PersonId INTEGER NOT NULL,
+    CarId INTEGER NOT NULL,
+    OrganizationId INTEGER NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE,
+    TotalCost DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (PersonId) REFERENCES Person(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (CarId) REFERENCES Car(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (OrganizationId) REFERENCES Organization(Id) ON DELETE RESTRICT
+);

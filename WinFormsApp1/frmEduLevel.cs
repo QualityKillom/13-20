@@ -1,41 +1,70 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmEduLevel : Form
+﻿
+namespace WinFormsApp1
 {
-    private EduLevel eduLevel;
-
-    public frmEduLevel(EduLevel e = null)
+    public partial class frmEduLevel : Form
     {
-        InitializeComponent();
-        eduLevel = e ?? new EduLevel();
-        if (e != null)
-        {
-            txtName.Text = e.Name;
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmEduLevel(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Название уровня образования обязательно.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadEduLevel();
             }
-
-            eduLevel.Name = txtName.Text;
-
-            if (eduLevel.Id == 0)
-                eduLevel.Add();
-            else
-                eduLevel.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadEduLevel()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM EduLevel WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader["Name"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading education level: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EduLevel eduLevel = new EduLevel
+                {
+                    Id = _id ?? 0,
+                    Name = txtName.Text
+                };
+                eduLevel.Add();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving education level: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

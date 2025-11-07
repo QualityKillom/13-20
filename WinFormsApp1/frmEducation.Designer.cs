@@ -3,20 +3,20 @@
     partial class frmEducation
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.ComboBox cmbWorkerId;
-        private System.Windows.Forms.ComboBox cmbEduLevelId;
-        private System.Windows.Forms.ComboBox cmbSpecialtyId;
-        private System.Windows.Forms.ComboBox cmbQualificationId;
-        private System.Windows.Forms.ComboBox cmbInstitutionId;
-        private System.Windows.Forms.TextBox txtGraduationYear;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Label lblWorkerId;
-        private System.Windows.Forms.Label lblEduLevelId;
-        private System.Windows.Forms.Label lblSpecialtyId;
-        private System.Windows.Forms.Label lblQualificationId;
-        private System.Windows.Forms.Label lblInstitutionId;
+        private System.Windows.Forms.Label lblWorker;
+        private System.Windows.Forms.ComboBox cmbWorker;
+        private System.Windows.Forms.Label lblEduLevel;
+        private System.Windows.Forms.ComboBox cmbEduLevel;
+        private System.Windows.Forms.Label lblSpecialty;
+        private System.Windows.Forms.ComboBox cmbSpecialty;
+        private System.Windows.Forms.Label lblQualification;
+        private System.Windows.Forms.ComboBox cmbQualification;
+        private System.Windows.Forms.Label lblInstitution;
+        private System.Windows.Forms.ComboBox cmbInstitution;
         private System.Windows.Forms.Label lblGraduationYear;
-        private System.Windows.Forms.Panel panelTop;
+        private System.Windows.Forms.NumericUpDown nudGraduationYear;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnCancel;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,181 +29,145 @@
 
         private void InitializeComponent()
         {
-            this.cmbWorkerId = new System.Windows.Forms.ComboBox();
-            this.cmbEduLevelId = new System.Windows.Forms.ComboBox();
-            this.cmbSpecialtyId = new System.Windows.Forms.ComboBox();
-            this.cmbQualificationId = new System.Windows.Forms.ComboBox();
-            this.cmbInstitutionId = new System.Windows.Forms.ComboBox();
-            this.txtGraduationYear = new System.Windows.Forms.TextBox();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.lblWorkerId = new System.Windows.Forms.Label();
-            this.lblEduLevelId = new System.Windows.Forms.Label();
-            this.lblSpecialtyId = new System.Windows.Forms.Label();
-            this.lblQualificationId = new System.Windows.Forms.Label();
-            this.lblInstitutionId = new System.Windows.Forms.Label();
+            this.lblWorker = new System.Windows.Forms.Label();
+            this.cmbWorker = new System.Windows.Forms.ComboBox();
+            this.lblEduLevel = new System.Windows.Forms.Label();
+            this.cmbEduLevel = new System.Windows.Forms.ComboBox();
+            this.lblSpecialty = new System.Windows.Forms.Label();
+            this.cmbSpecialty = new System.Windows.Forms.ComboBox();
+            this.lblQualification = new System.Windows.Forms.Label();
+            this.cmbQualification = new System.Windows.Forms.ComboBox();
+            this.lblInstitution = new System.Windows.Forms.Label();
+            this.cmbInstitution = new System.Windows.Forms.ComboBox();
             this.lblGraduationYear = new System.Windows.Forms.Label();
-            this.panelTop = new System.Windows.Forms.Panel();
+            this.nudGraduationYear = new System.Windows.Forms.NumericUpDown();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGraduationYear)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmbWorkerId
-            // 
-            this.cmbWorkerId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbWorkerId.FormattingEnabled = true;
-            this.cmbWorkerId.Location = new System.Drawing.Point(150, 70);
-            this.cmbWorkerId.Name = "cmbWorkerId";
-            this.cmbWorkerId.Size = new System.Drawing.Size(200, 21);
-            this.cmbWorkerId.TabIndex = 0;
-            // 
-            // cmbEduLevelId
-            // 
-            this.cmbEduLevelId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEduLevelId.FormattingEnabled = true;
-            this.cmbEduLevelId.Location = new System.Drawing.Point(150, 100);
-            this.cmbEduLevelId.Name = "cmbEduLevelId";
-            this.cmbEduLevelId.Size = new System.Drawing.Size(200, 21);
-            this.cmbEduLevelId.TabIndex = 1;
-            // 
-            // cmbSpecialtyId
-            // 
-            this.cmbSpecialtyId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSpecialtyId.FormattingEnabled = true;
-            this.cmbSpecialtyId.Location = new System.Drawing.Point(150, 130);
-            this.cmbSpecialtyId.Name = "cmbSpecialtyId";
-            this.cmbSpecialtyId.Size = new System.Drawing.Size(200, 21);
-            this.cmbSpecialtyId.TabIndex = 2;
-            // 
-            // cmbQualificationId
-            // 
-            this.cmbQualificationId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbQualificationId.FormattingEnabled = true;
-            this.cmbQualificationId.Location = new System.Drawing.Point(150, 160);
-            this.cmbQualificationId.Name = "cmbQualificationId";
-            this.cmbQualificationId.Size = new System.Drawing.Size(200, 21);
-            this.cmbQualificationId.TabIndex = 3;
-            // 
-            // cmbInstitutionId
-            // 
-            this.cmbInstitutionId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbInstitutionId.FormattingEnabled = true;
-            this.cmbInstitutionId.Location = new System.Drawing.Point(150, 190);
-            this.cmbInstitutionId.Name = "cmbInstitutionId";
-            this.cmbInstitutionId.Size = new System.Drawing.Size(200, 21);
-            this.cmbInstitutionId.TabIndex = 4;
-            // 
-            // txtGraduationYear
-            // 
-            this.txtGraduationYear.Location = new System.Drawing.Point(150, 220);
-            this.txtGraduationYear.Name = "txtGraduationYear";
-            this.txtGraduationYear.Size = new System.Drawing.Size(200, 23);
-            this.txtGraduationYear.TabIndex = 5;
-            this.txtGraduationYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(150, 260);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(100, 30);
-            this.btnSave.TabIndex = 6;
-            this.btnSave.Text = "💾 Сохранить";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(0, 120, 215); // Яркий синий
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // lblWorkerId
-            // 
-            this.lblWorkerId.AutoSize = true;
-            this.lblWorkerId.Location = new System.Drawing.Point(50, 73);
-            this.lblWorkerId.Name = "lblWorkerId";
-            this.lblWorkerId.Size = new System.Drawing.Size(94, 13);
-            this.lblWorkerId.TabIndex = 7;
-            this.lblWorkerId.Text = "ID работника:";
-            this.lblWorkerId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255); // Темно-синий текст
-            // 
-            // lblEduLevelId
-            // 
-            this.lblEduLevelId.AutoSize = true;
-            this.lblEduLevelId.Location = new System.Drawing.Point(50, 103);
-            this.lblEduLevelId.Name = "lblEduLevelId";
-            this.lblEduLevelId.Size = new System.Drawing.Size(94, 13);
-            this.lblEduLevelId.TabIndex = 8;
-            this.lblEduLevelId.Text = "ID уровня образования:";
-            this.lblEduLevelId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
-            // 
-            // lblSpecialtyId
-            // 
-            this.lblSpecialtyId.AutoSize = true;
-            this.lblSpecialtyId.Location = new System.Drawing.Point(50, 133);
-            this.lblSpecialtyId.Name = "lblSpecialtyId";
-            this.lblSpecialtyId.Size = new System.Drawing.Size(94, 13);
-            this.lblSpecialtyId.TabIndex = 9;
-            this.lblSpecialtyId.Text = "ID специальности:";
-            this.lblSpecialtyId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
-            // 
-            // lblQualificationId
-            // 
-            this.lblQualificationId.AutoSize = true;
-            this.lblQualificationId.Location = new System.Drawing.Point(50, 163);
-            this.lblQualificationId.Name = "lblQualificationId";
-            this.lblQualificationId.Size = new System.Drawing.Size(94, 13);
-            this.lblQualificationId.TabIndex = 10;
-            this.lblQualificationId.Text = "ID квалификации:";
-            this.lblQualificationId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
-            // 
-            // lblInstitutionId
-            // 
-            this.lblInstitutionId.AutoSize = true;
-            this.lblInstitutionId.Location = new System.Drawing.Point(50, 193);
-            this.lblInstitutionId.Name = "lblInstitutionId";
-            this.lblInstitutionId.Size = new System.Drawing.Size(94, 13);
-            this.lblInstitutionId.TabIndex = 11;
-            this.lblInstitutionId.Text = "ID учреждения:";
-            this.lblInstitutionId.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
-            // 
+
+            // lblWorker
+            this.lblWorker.AutoSize = true;
+            this.lblWorker.Location = new System.Drawing.Point(12, 15);
+            this.lblWorker.Name = "lblWorker";
+            this.lblWorker.Size = new System.Drawing.Size(45, 13);
+            this.lblWorker.Text = "Worker:";
+
+            // cmbWorker
+            this.cmbWorker.FormattingEnabled = true;
+            this.cmbWorker.Location = new System.Drawing.Point(80, 12);
+            this.cmbWorker.Name = "cmbWorker";
+            this.cmbWorker.Size = new System.Drawing.Size(200, 21);
+            this.cmbWorker.TabIndex = 0;
+
+            // lblEduLevel
+            this.lblEduLevel.AutoSize = true;
+            this.lblEduLevel.Location = new System.Drawing.Point(12, 45);
+            this.lblEduLevel.Name = "lblEduLevel";
+            this.lblEduLevel.Size = new System.Drawing.Size(62, 13);
+            this.lblEduLevel.Text = "Edu Level:";
+
+            // cmbEduLevel
+            this.cmbEduLevel.FormattingEnabled = true;
+            this.cmbEduLevel.Location = new System.Drawing.Point(80, 42);
+            this.cmbEduLevel.Name = "cmbEduLevel";
+            this.cmbEduLevel.Size = new System.Drawing.Size(200, 21);
+            this.cmbEduLevel.TabIndex = 1;
+
+            // lblSpecialty
+            this.lblSpecialty.AutoSize = true;
+            this.lblSpecialty.Location = new System.Drawing.Point(12, 75);
+            this.lblSpecialty.Name = "lblSpecialty";
+            this.lblSpecialty.Size = new System.Drawing.Size(53, 13);
+            this.lblSpecialty.Text = "Specialty:";
+
+            // cmbSpecialty
+            this.cmbSpecialty.FormattingEnabled = true;
+            this.cmbSpecialty.Location = new System.Drawing.Point(80, 72);
+            this.cmbSpecialty.Name = "cmbSpecialty";
+            this.cmbSpecialty.Size = new System.Drawing.Size(200, 21);
+            this.cmbSpecialty.TabIndex = 2;
+
+            // lblQualification
+            this.lblQualification.AutoSize = true;
+            this.lblQualification.Location = new System.Drawing.Point(12, 105);
+            this.lblQualification.Name = "lblQualification";
+            this.lblQualification.Size = new System.Drawing.Size(68, 13);
+            this.lblQualification.Text = "Qualification:";
+
+            // cmbQualification
+            this.cmbQualification.FormattingEnabled = true;
+            this.cmbQualification.Location = new System.Drawing.Point(80, 102);
+            this.cmbQualification.Name = "cmbQualification";
+            this.cmbQualification.Size = new System.Drawing.Size(200, 21);
+            this.cmbQualification.TabIndex = 3;
+
+            // lblInstitution
+            this.lblInstitution.AutoSize = true;
+            this.lblInstitution.Location = new System.Drawing.Point(12, 135);
+            this.lblInstitution.Name = "lblInstitution";
+            this.lblInstitution.Size = new System.Drawing.Size(59, 13);
+            this.lblInstitution.Text = "Institution:";
+
+            // cmbInstitution
+            this.cmbInstitution.FormattingEnabled = true;
+            this.cmbInstitution.Location = new System.Drawing.Point(80, 132);
+            this.cmbInstitution.Name = "cmbInstitution";
+            this.cmbInstitution.Size = new System.Drawing.Size(200, 21);
+            this.cmbInstitution.TabIndex = 4;
+
             // lblGraduationYear
-            // 
             this.lblGraduationYear.AutoSize = true;
-            this.lblGraduationYear.Location = new System.Drawing.Point(50, 223);
+            this.lblGraduationYear.Location = new System.Drawing.Point(12, 165);
             this.lblGraduationYear.Name = "lblGraduationYear";
-            this.lblGraduationYear.Size = new System.Drawing.Size(94, 13);
-            this.lblGraduationYear.TabIndex = 12;
-            this.lblGraduationYear.Text = "Год выпуска:";
-            this.lblGraduationYear.ForeColor = System.Drawing.Color.FromArgb(51, 153, 255);
-            // 
-            // panelTop
-            // 
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(51, 153, 255); // Темно-синий верхний бар
-            this.panelTop.Location = new System.Drawing.Point(0, 0);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(400, 50);
-            this.panelTop.TabIndex = 13;
-            // 
+            this.lblGraduationYear.Size = new System.Drawing.Size(80, 13);
+            this.lblGraduationYear.Text = "Graduation Year:";
+
+            // nudGraduationYear
+            this.nudGraduationYear.Location = new System.Drawing.Point(80, 162);
+            this.nudGraduationYear.Maximum = 2100;
+            this.nudGraduationYear.Minimum = 1900;
+            this.nudGraduationYear.Name = "nudGraduationYear";
+            this.nudGraduationYear.Size = new System.Drawing.Size(200, 20);
+            this.nudGraduationYear.TabIndex = 5;
+
+            // btnSave
+            this.btnSave.Location = new System.Drawing.Point(124, 200);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+
+            // btnCancel
+            this.btnCancel.Location = new System.Drawing.Point(205, 200);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+
             // frmEducation
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 300);
-            this.Controls.Add(this.panelTop);
-            this.Controls.Add(this.lblGraduationYear);
-            this.Controls.Add(this.lblInstitutionId);
-            this.Controls.Add(this.lblQualificationId);
-            this.Controls.Add(this.lblSpecialtyId);
-            this.Controls.Add(this.lblEduLevelId);
-            this.Controls.Add(this.lblWorkerId);
+            this.ClientSize = new System.Drawing.Size(294, 235);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtGraduationYear);
-            this.Controls.Add(this.cmbInstitutionId);
-            this.Controls.Add(this.cmbQualificationId);
-            this.Controls.Add(this.cmbSpecialtyId);
-            this.Controls.Add(this.cmbEduLevelId);
-            this.Controls.Add(this.cmbWorkerId);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.Controls.Add(this.nudGraduationYear);
+            this.Controls.Add(this.lblGraduationYear);
+            this.Controls.Add(this.cmbInstitution);
+            this.Controls.Add(this.lblInstitution);
+            this.Controls.Add(this.cmbQualification);
+            this.Controls.Add(this.lblQualification);
+            this.Controls.Add(this.cmbSpecialty);
+            this.Controls.Add(this.lblSpecialty);
+            this.Controls.Add(this.cmbEduLevel);
+            this.Controls.Add(this.lblEduLevel);
+            this.Controls.Add(this.cmbWorker);
+            this.Controls.Add(this.lblWorker);
             this.Name = "frmEducation";
-            this.Text = "Добавление/Редактирование образования";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Education";
+            ((System.ComponentModel.ISupportInitialize)(this.nudGraduationYear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }

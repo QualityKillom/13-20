@@ -1,41 +1,69 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmSpecialty : Form
+﻿namespace WinFormsApp1
 {
-    private Specialty specialty;
-
-    public frmSpecialty(Specialty s = null)
+    public partial class frmSpecialty : Form
     {
-        InitializeComponent();
-        specialty = s ?? new Specialty();
-        if (s != null)
-        {
-            txtName.Text = s.Name;
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmSpecialty(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Название специальности обязательно.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadSpecialty();
             }
-
-            specialty.Name = txtName.Text;
-
-            if (specialty.Id == 0)
-                specialty.Add();
-            else
-                specialty.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadSpecialty()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Specialty WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader["Name"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading specialty: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Specialty specialty = new Specialty
+                {
+                    Id = _id ?? 0,
+                    Name = txtName.Text
+                };
+                specialty.Add();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving specialty: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

@@ -1,43 +1,72 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmEducationalInstitution : Form
+﻿
+namespace WinFormsApp1
 {
-    private EducationalInstitution institution;
-
-    public frmEducationalInstitution(EducationalInstitution i = null)
+    public partial class frmEducationalInstitution : Form
     {
-        InitializeComponent();
-        institution = i ?? new EducationalInstitution();
-        if (i != null)
-        {
-            txtName.Text = i.Name ?? "";
-            txtAddress.Text = i.Address ?? "";
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmEducationalInstitution(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Название учебного заведения обязательно.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadInstitution();
             }
-
-            institution.Name = txtName.Text;
-            institution.Address = string.IsNullOrWhiteSpace(txtAddress.Text) ? null : txtAddress.Text;
-
-            if (institution.Id == 0)
-                institution.Add();
-            else
-                institution.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadInstitution()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM EducationalInstitution WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader["Name"].ToString();
+                                txtAddress.Text = reader["Address"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading institution: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EducationalInstitution institution = new EducationalInstitution
+                {
+                    Id = _id ?? 0,
+                    Name = txtName.Text,
+                    Address = txtAddress.Text
+                };
+                institution.Add();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving institution: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

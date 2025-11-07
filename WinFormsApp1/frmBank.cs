@@ -1,43 +1,79 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmBank : Form
+﻿namespace WinFormsApp1
 {
-    private Bank bank;
-
-    public frmBank(Bank b = null)
+    public partial class frmBank : Form
     {
-        InitializeComponent();
-        bank = b ?? new Bank();
-        if (b != null)
-        {
-            txtName.Text = b.Name;
-            txtBIC.Text = b.BIC ?? "";
-        }
-    }
+        private int? id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmBank(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            InitializeComponent();
+            this.id = id;
+            if (id.HasValue)
             {
-                MessageBox.Show("Название банка обязательно.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadBank();
             }
-
-            bank.Name = txtName.Text;
-            bank.BIC = string.IsNullOrWhiteSpace(txtBIC.Text) ? null : txtBIC.Text;
-
-            if (bank.Id == 0)
-                bank.Add();
-            else
-                bank.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadBank()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Bank WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader.GetString("Name");
+                                txtBIC.Text = reader.IsDBNull(reader.GetOrdinal("BIC")) ? "" : reader.GetString("BIC");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading bank: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Bank bank = new Bank
+                {
+                    Id = id ?? 0,
+                    Name = txtName.Text,
+                    BIC = string.IsNullOrWhiteSpace(txtBIC.Text) ? null : txtBIC.Text
+                };
+
+                if (id.HasValue)
+                {
+                    bank.Update();
+                }
+                else
+                {
+                    bank.Add();
+                }
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving bank: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

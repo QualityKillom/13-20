@@ -1,47 +1,76 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmPerson : Form
+﻿
+namespace WinFormsApp1
 {
-    private Person person;
-
-    public frmPerson(Person p = null)
+    public partial class frmPerson : Form
     {
-        InitializeComponent();
-        person = p ?? new Person();
-        if (p != null)
-        {
-            txtLastName.Text = p.LastName;
-            txtFirstName.Text = p.FirstName;
-            txtMiddleName.Text = p.MiddleName ?? "";
-            txtPhone.Text = p.Phone ?? "";
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmPerson(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtLastName.Text) || string.IsNullOrWhiteSpace(txtFirstName.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Фамилия и имя обязательны.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadPerson();
             }
-
-            person.LastName = txtLastName.Text;
-            person.FirstName = txtFirstName.Text;
-            person.MiddleName = string.IsNullOrWhiteSpace(txtMiddleName.Text) ? null : txtMiddleName.Text;
-            person.Phone = string.IsNullOrWhiteSpace(txtPhone.Text) ? null : txtPhone.Text;
-
-            if (person.Id == 0)
-                person.Add();
-            else
-                person.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadPerson()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Person WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtLastName.Text = reader["LastName"].ToString();
+                                txtFirstName.Text = reader["FirstName"].ToString();
+                                txtMiddleName.Text = reader["MiddleName"].ToString();
+                                txtPhone.Text = reader["Phone"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading person: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Person person = new Person
+                {
+                    Id = _id ?? 0,
+                    LastName = txtLastName.Text,
+                    FirstName = txtFirstName.Text,
+                    MiddleName = txtMiddleName.Text,
+                    Phone = txtPhone.Text
+                };
+                person.Add();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving person: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

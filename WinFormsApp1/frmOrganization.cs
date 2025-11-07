@@ -1,43 +1,72 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmOrganization : Form
+﻿
+namespace WinFormsApp1
 {
-    private Organization organization;
-
-    public frmOrganization(Organization o = null)
+    public partial class frmOrganization : Form
     {
-        InitializeComponent();
-        organization = o ?? new Organization();
-        if (o != null)
-        {
-            txtName.Text = o.Name ?? "";
-            txtAddress.Text = o.Address ?? "";
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmOrganization(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Название организации обязательно.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadOrganization();
             }
-
-            organization.Name = txtName.Text;
-            organization.Address = string.IsNullOrWhiteSpace(txtAddress.Text) ? null : txtAddress.Text;
-
-            if (organization.Id == 0)
-                organization.Add();
-            else
-                organization.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadOrganization()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Organization WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader["Name"].ToString();
+                                txtAddress.Text = reader["Address"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading organization: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Organization organization = new Organization
+                {
+                    Id = _id ?? 0,
+                    Name = txtName.Text,
+                    Address = txtAddress.Text
+                };
+                organization.Add();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving organization: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

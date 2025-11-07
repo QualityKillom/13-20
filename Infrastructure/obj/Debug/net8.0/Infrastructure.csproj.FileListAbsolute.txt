@@ -21,3 +21,4 @@ C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infra
 C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\refint\Infrastructure.dll
 C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
 C:\Users\QualityKillom\RiderProjects\13-20\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll
+D:\13-20\Infrastructure\obj\Debug\net8.0\Infrastructure.sourcelink.json

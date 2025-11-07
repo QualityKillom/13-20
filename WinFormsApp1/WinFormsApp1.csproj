@@ -18,106 +18,97 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="frmFL.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListWorker.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmWorker.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="frmMain.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListComponent.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmComponent.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListPCConfiguration.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmPCConfiguration.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListOrder.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmOrder.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListPerson.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmPerson.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListBank.cs.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="frmBank.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListCard.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmCard.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListEduLevel.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="frmEduLevel.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListSpecialty.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmSpecialty.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListQualification.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="frmQualification.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListEducationalInstitution.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmEducationalInstitution.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListRank.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="frmRank.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListEducation.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmEducation.cs">
-        <SubType>Form</SubType>
-      </Compile>
-      <Compile Update="frmListDocumentType.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="frmDocumentType.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListDocument.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="frmDocument.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmListOrganization.cs">
+      <Compile Update="frmOrganization.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="frmOrganization.cs">
+      <Compile Update="MyTheme\frmListCar.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="MyTheme\frmListRental.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="MyTheme\frmCar.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="MyTheme\frmRental.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListBank.cs.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListCard.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListDocument.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListDocumentType.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListEducation.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListEducationalInstitution.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListEduLevel.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListOrganization.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListPerson.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListQualification.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListRank.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListSpecialty.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="List\frmListWorker.cs">
         <SubType>Form</SubType>
       </Compile>
     </ItemGroup>

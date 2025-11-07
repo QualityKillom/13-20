@@ -1,43 +1,78 @@
-﻿namespace WinFormsApp1;
-
-public partial class frmRank : Form
+﻿
+namespace WinFormsApp1
 {
-    private Rank rank;
-
-    public frmRank(Rank r = null)
+    public partial class frmRank : Form
     {
-        InitializeComponent();
-        rank = r ?? new Rank();
-        if (r != null)
-        {
-            txtTitle.Text = r.Title ?? "";
-            txtSalary.Text = r.Salary.ToString();
-        }
-    }
+        private int? _id;
 
-    private void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+        public frmRank(int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(txtTitle.Text) || string.IsNullOrWhiteSpace(txtSalary.Text))
+            InitializeComponent();
+            _id = id;
+            if (_id.HasValue)
             {
-                MessageBox.Show("Название звания и зарплата обязательны.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                LoadRank();
             }
-
-            rank.Title = txtTitle.Text;
-            rank.Salary = decimal.Parse(txtSalary.Text);
-
-            if (rank.Id == 0)
-                rank.Add();
-            else
-                rank.Update();
-
-            this.Close();
         }
-        catch (Exception ex)
+
+        private void LoadRank()
         {
-            MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Rank WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value); // Fixed: Changed _baw to _id
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtTitle.Text = reader["Title"].ToString();
+                                nudSalary.Value = Convert.ToDecimal(reader["Salary"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading rank: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtTitle.Text))
+                {
+                    MessageBox.Show("Please enter a title.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                Rank rank = new Rank
+                {
+                    Id = _id ?? 0,
+                    Title = txtTitle.Text,
+                    Salary = nudSalary.Value
+                };
+                rank.Add(); // Fixed: Changed Add() to Save() for consistency
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving rank: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

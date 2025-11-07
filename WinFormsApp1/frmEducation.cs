@@ -1,148 +1,143 @@
-﻿using Npgsql;
-using System;
-using System.Data;
-using System.Windows.Forms;
-
+﻿
 namespace WinFormsApp1
 {
     public partial class frmEducation : Form
     {
-        private Education education;
+        private int? _id;
 
-        public frmEducation(Education e = null)
+        public frmEducation(int? id = null)
         {
             InitializeComponent();
-            education = e ?? new Education();
+            _id = id;
             LoadComboBoxes();
-            if (e != null)
+            if (_id.HasValue)
             {
-                cmbWorkerId.SelectedValue = e.WorkerId;
-                cmbEduLevelId.SelectedValue = e.EduLevelId;
-                cmbSpecialtyId.SelectedValue = e.SpecialtyId;
-                cmbQualificationId.SelectedValue = e.QualificationId;
-                cmbInstitutionId.SelectedValue = e.InstitutionId;
-                txtGraduationYear.Text = e.GraduationYear?.ToString() ?? "";
+                LoadEducation();
             }
         }
 
-       private void LoadComboBoxes()
-{
-    using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
-    {
-        conn.Open();
-
-        // ✅ Worker (берём ФИО из Person)
-        string workerQuery = @"
-            SELECT w.Id,
-                   p.LastName || ' ' || p.FirstName AS FullName
-            FROM Worker w
-            JOIN Person p ON w.PersonId = p.Id
-            ORDER BY p.LastName, p.FirstName;
-        ";
-        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(workerQuery, conn))
+        private void LoadComboBoxes()
         {
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            cmbWorkerId.DataSource = dt;
-            cmbWorkerId.DisplayMember = "FullName";
-            cmbWorkerId.ValueMember = "Id";
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    // Load Workers (via Person)
+                    string workerQuery = "SELECT w.Id, p.LastName, p.FirstName FROM Worker w JOIN Person p ON w.PersonId = p.Id";
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(workerQuery, conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cmbWorker.DataSource = dt;
+                        cmbWorker.DisplayMember = "LastName";
+                        cmbWorker.ValueMember = "Id";
+                    }
+                    // Load EduLevels
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter("SELECT Id, Name FROM EduLevel", conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cmbEduLevel.DataSource = dt;
+                        cmbEduLevel.DisplayMember = "Name";
+                        cmbEduLevel.ValueMember = "Id";
+                    }
+                    // Load Specialties
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter("SELECT Id, Name FROM Specialty", conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cmbSpecialty.DataSource = dt;
+                        cmbSpecialty.DisplayMember = "Name";
+                        cmbSpecialty.ValueMember = "Id";
+                    }
+                    // Load Qualifications
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter("SELECT Id, Name FROM Qualification", conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cmbQualification.DataSource = dt;
+                        cmbQualification.DisplayMember = "Name";
+                        cmbQualification.ValueMember = "Id";
+                    }
+                    // Load EducationalInstitutions
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter("SELECT Id, Name FROM EducationalInstitution", conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        cmbInstitution.DataSource = dt;
+                        cmbInstitution.DisplayMember = "Name";
+                        cmbInstitution.ValueMember = "Id";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading combo boxes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        // EduLevel
-        string eduLevelQuery = "SELECT Id, Name FROM EduLevel";
-        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(eduLevelQuery, conn))
+        private void LoadEducation()
         {
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            cmbEduLevelId.DataSource = dt;
-            cmbEduLevelId.DisplayMember = "Name";
-            cmbEduLevelId.ValueMember = "Id";
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Education WHERE Id = @Id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", _id.Value);
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                cmbWorker.SelectedValue = Convert.ToInt32(reader["WorkerId"]);
+                                cmbEduLevel.SelectedValue = Convert.ToInt32(reader["EduLevelId"]);
+                                cmbSpecialty.SelectedValue = Convert.ToInt32(reader["SpecialtyId"]);
+                                cmbQualification.SelectedValue = Convert.ToInt32(reader["QualificationId"]);
+                                cmbInstitution.SelectedValue = Convert.ToInt32(reader["InstitutionId"]);
+                                if (reader["GraduationYear"] != DBNull.Value)
+                                    nudGraduationYear.Value = Convert.ToInt32(reader["GraduationYear"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading education: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-        // Specialty
-        string specialtyQuery = "SELECT Id, Name FROM Specialty";
-        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(specialtyQuery, conn))
-        {
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            cmbSpecialtyId.DataSource = dt;
-            cmbSpecialtyId.DisplayMember = "Name";
-            cmbSpecialtyId.ValueMember = "Id";
-        }
-
-        // Qualification
-        string qualificationQuery = "SELECT Id, Name FROM Qualification";
-        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(qualificationQuery, conn))
-        {
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            cmbQualificationId.DataSource = dt;
-            cmbQualificationId.DisplayMember = "Name";
-            cmbQualificationId.ValueMember = "Id";
-        }
-
-        // EducationalInstitution
-        string institutionQuery = "SELECT Id, Name FROM EducationalInstitution";
-        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(institutionQuery, conn))
-        {
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            cmbInstitutionId.DataSource = dt;
-            cmbInstitutionId.DisplayMember = "Name";
-            cmbInstitutionId.ValueMember = "Id";
-        }
-    }
-}
-
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                if (cmbWorkerId.SelectedValue == null || cmbEduLevelId.SelectedValue == null ||
-                    cmbSpecialtyId.SelectedValue == null || cmbQualificationId.SelectedValue == null ||
-                    cmbInstitutionId.SelectedValue == null)
+                Education education = new Education
                 {
-                    MessageBox.Show("Все идентификаторы обязательны.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                education.WorkerId = Convert.ToInt32(cmbWorkerId.SelectedValue);
-                education.EduLevelId = Convert.ToInt32(cmbEduLevelId.SelectedValue);
-                education.SpecialtyId = Convert.ToInt32(cmbSpecialtyId.SelectedValue);
-                education.QualificationId = Convert.ToInt32(cmbQualificationId.SelectedValue);
-                education.InstitutionId = Convert.ToInt32(cmbInstitutionId.SelectedValue);
-                education.GraduationYear = string.IsNullOrWhiteSpace(txtGraduationYear.Text) ? null : (int?)Convert.ToInt32(txtGraduationYear.Text);
-
-                using (NpgsqlConnection conn = new NpgsqlConnection(modMain.ConnectionString))
-                {
-                    conn.Open();
-                    if (education.Id == 0)
-                    {
-                        string query = "INSERT INTO Education (WorkerId, EduLevelId, SpecialtyId, QualificationId, InstitutionId, GraduationYear) VALUES (@WorkerId, @EduLevelId, @SpecialtyId, @QualificationId, @InstitutionId, @GraduationYear) RETURNING Id";
-                        using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@WorkerId", education.WorkerId);
-                            cmd.Parameters.AddWithValue("@EduLevelId", education.EduLevelId);
-                            cmd.Parameters.AddWithValue("@SpecialtyId", education.SpecialtyId);
-                            cmd.Parameters.AddWithValue("@QualificationId", education.QualificationId);
-                            cmd.Parameters.AddWithValue("@InstitutionId", education.InstitutionId);
-                            cmd.Parameters.AddWithValue("@GraduationYear", education.GraduationYear ?? (object)DBNull.Value);
-                            education.Id = (int)cmd.ExecuteScalar(); // Получаем новый Id
-                        }
-                    }
-                    else
-                    {
-                        education.Update();
-                    }
-                }
-
-                this.Close();
+                    Id = _id ?? 0,
+                    WorkerId = Convert.ToInt32(cmbWorker.SelectedValue),
+                    EduLevelId = Convert.ToInt32(cmbEduLevel.SelectedValue),
+                    SpecialtyId = Convert.ToInt32(cmbSpecialty.SelectedValue),
+                    QualificationId = Convert.ToInt32(cmbQualification.SelectedValue),
+                    InstitutionId = Convert.ToInt32(cmbInstitution.SelectedValue),
+                    GraduationYear = nudGraduationYear.Value == 0 ? null : (int?)nudGraduationYear.Value
+                };
+                education.Add();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error saving education: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }
